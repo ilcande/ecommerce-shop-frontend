@@ -1,0 +1,18 @@
+/* src/components/pages/HomePage.css */
+
+.btn-gradient {
+  background: linear-gradient(45deg, #ff6b6b, #f06595);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease, opacity 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+.btn-gradient:hover {
+  opacity: 0.9;
+}
