@@ -1,0 +1,117 @@
+/* src/components/products/Products.css */
+
+/* General styles for the page */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #121212; /* Background color */
+}
+
+/* Product container styles */
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Space between cards */
+  justify-content: center; /* Center cards horizontally */
+  padding: 20px; /* Padding around the container */
+}
+
+/* Card styles */
+.product-card {
+  background: linear-gradient(45deg, #ff6b6b, #f06595); /* Gradient background */
+  color: white; /* Text color */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  width: 300px; /* Fixed width */
+  height: 400px; /* Fixed height */
+  padding: 20px; /* Padding inside the card */
+  box-sizing: border-box; /* Include padding in width/height calculation */
+  display: flex;
+  flex-direction: column; /* Align content vertically */
+  align-items: center; /* Center content horizontally */
+  text-align: center; /* Center text */
+  position: relative; /* For absolute positioning of image */
+  transition: transform 0.3s ease; /* Smooth scale transition */
+}
+
+/* Card hover effect */
+.product-card:hover {
+  transform: scale(1.05); /* Slightly enlarge card on hover */
+}
+
+/* Image container to ensure proper fit */
+.image-container {
+  width: 100%;
+  height: 60%; /* Adjust height as needed */
+  overflow: hidden; /* Hide overflow */
+  border-radius: 8px; /* Rounded corners for the container */
+  margin-bottom: 10px; /* Space below the image */
+  display: flex; /* Flexbox for centering image */
+  align-items: center; /* Center image vertically */
+  justify-content: center; /* Center image horizontally */
+}
+
+/* Image styles */
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure image covers the container */
+}
+
+/* Product name styles */
+.product-name {
+  font-size: 1.5rem; /* Font size */
+  font-weight: 600; /* Bold text */
+  margin-bottom: 10px; /* Space below name */
+}
+
+/* Base price styles */
+.base-price {
+  font-size: 1.2rem; /* Font size */
+  margin-bottom: 15px; /* Space below price */
+}
+
+.price-highlight {
+  font-size: 1.5rem; /* Font size for price */
+  font-weight: 700; /* Bold text */
+  color: #ffeb3b; /* Highlight color */
+  background: linear-gradient(45deg, #ff6b6b, #f06595); /* Gradient background for price */
+  padding: 5px; /* Padding around price */
+  border-radius: 5px; /* Rounded corners for background */
+}
+
+/* CTA button styles */
+.cta-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #121212; /* Black background */
+  color: #fff; /* White text */
+  text-decoration: none; /* Remove underline */
+  font-weight: 600; /* Bold text */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+  border: none; /* Remove default button border */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.cta-button:hover {
+  background-color: #333; /* Darker background on hover */
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .product-card {
+    width: 250px; /* Adjust width for smaller screens */
+    height: 350px; /* Adjust height for smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .product-card {
+    width: 200px; /* Adjust width for mobile screens */
+    height: 300px; /* Adjust height for mobile screens */
+  }
+}

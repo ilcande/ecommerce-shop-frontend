@@ -1,0 +1,79 @@
+/* General styles for the page */
+.product-detail-container {
+  background-color: #121212; /* Matching background color */
+  color: white; /* Text color */
+  padding: 20px; /* Padding around the container */
+  max-width: 800px; /* Maximum width */
+  margin: auto; /* Center align */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Image container to ensure proper fit */
+.image-container {
+  width: 100%;
+  height: auto; /* Auto height */
+  overflow: hidden; /* Hide overflow */
+  border-radius: 8px; /* Rounded corners for the container */
+  margin-bottom: 20px; /* Space below the image */
+  display: flex; /* Flexbox for centering image */
+  align-items: center; /* Center image vertically */
+  justify-content: center; /* Center image horizontally */
+}
+
+/* Image styles */
+.product-image {
+  width: 100%;
+  height: auto; /* Auto height */
+  object-fit: cover; /* Ensure image covers the container */
+}
+
+/* Base and total price styles */
+.base-price, .total-price {
+  font-size: 20px; /* Font size */
+  font-weight: bold; /* Bold text */
+  margin: 10px 0; /* Margin above and below */
+}
+
+.total-price {
+  color: #f06595; /* Highlighted color */
+}
+
+/* Options container */
+.options-container {
+  display: flex; /* Flexbox for layout */
+  flex-direction: column; /* Column layout */
+  gap: 10px; /* Space between options */
+}
+
+/* Option item styles */
+.option-item {
+  display: flex; /* Flexbox for layout */
+  align-items: center; /* Center items vertically */
+  gap: 10px; /* Space between radio button and text */
+}
+
+label {
+  display: flex; /* Flexbox for layout */
+  align-items: center; /* Center items vertically */
+}
+
+input[type="radio"] {
+  margin-right: 10px; /* Space between radio button and text */
+}
+
+.option-label {
+  font-size: 16px; /* Font size */
+}
+
+.option-label.selected {
+  color: #ff6b6b; /* Highlight color for selected option */
+  font-weight: bold; /* Bold text */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .product-detail-container {
+    padding: 15px; /* Adjust padding for mobile */
+  }
+}
