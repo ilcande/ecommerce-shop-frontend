@@ -1,18 +1,18 @@
 /* src/components/pages/HomePage.css */
 
 .btn-gradient {
-  background: linear-gradient(45deg, #ff6b6b, #f06595); /* Same gradient as text */
-  color: white; /* Text color in a shade of white */
+  background: linear-gradient(45deg, #ff6b6b, #f06595);
+  color: white;
   border: none;
   border-radius: 8px;
-  font-size: 1.125rem; /* Adjust font size as needed */
-  padding: 0.75rem 1.5rem; /* Adjust padding as needed */
+  font-size: 1.125rem;
+  padding: 0.75rem 1.5rem;
   cursor: pointer;
   transition: background 0.3s ease, opacity 0.3s ease;
-  width: 100%; /* Full width on mobile */
-  max-width: 400px; /* Maximum width on larger screens */
+  width: 100%;
+  max-width: 400px;
 }
 
 .btn-gradient:hover {
-  opacity: 0.9; /* Slightly reduce opacity on hover for a subtle effect */
+  opacity: 0.9;
 }
