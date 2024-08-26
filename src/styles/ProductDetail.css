@@ -1,0 +1,18 @@
+/* Basic styling for the tag pills */
+.tag-pill {
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag-pill:hover {
+  background-color: #e5e7eb; /* Light gray on hover */
+}
+
+.tag-pill.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none; /* Ensures the button does not respond to clicks */
+}
