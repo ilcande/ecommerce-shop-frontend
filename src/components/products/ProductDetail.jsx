@@ -49,7 +49,6 @@ const ProductDetail = () => {
     setDisabledOptions(new Set(newDisabledOptions));
   }, [selectedOptions, constraints, availableOptions]);
   
-
   const handleOptionChange = (partId, optionId) => {
     setSelectedOptions(prev => {
       const newSelection = { ...prev };
@@ -89,7 +88,15 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product, 1, selectedOptions, totalPrice);
+      // Extract only necessary data for cart
+      const cartProduct = {
+        id: product.id,
+        name: product.name,
+        base_price: product.base_price,
+        image_url: product.image_url,
+      };
+
+      addToCart(cartProduct, 1, selectedOptions, totalPrice);
       toast.success('Product added to cart', {
         position: 'top-right',
         autoClose: 3000,

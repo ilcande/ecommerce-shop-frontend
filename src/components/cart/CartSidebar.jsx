@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { XMarkIcon, ShoppingCartIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useCart } from '../../context/CartContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CartSidebar() {
   const [open, setOpen] = useState(false);
-  const { cart, getCartItemCount, removeFromCart } = useCart();
+  const { cart, getCartItemCount, removeFromCart, clearCart } = useCart();
+  const navigate  = useNavigate();
 
   // Calculate subtotal
   const subtotal = cart.reduce((total, item) => {
@@ -17,6 +22,29 @@ export default function CartSidebar() {
   const handleRemoveItem = (cartItemId) => {
     removeFromCart(cartItemId);
   };
+
+  const handleCheckout = async () => {
+    try {
+      await axios.post('/checkout', { cart_items: cart });
+  
+      setOpen(false);
+      clearCart();
+      navigate('/products');
+      toast.success('Checkout successful!', { autoClose: 3000 });
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      
+      // Handle axios errors correctly
+      if (error.response) {
+        // The request was made and the server responded with a status code outside the range of 2xx
+        toast.error('Error during checkout. Please try again.');
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error('Error during checkout. Please try again.');
+      }
+    }
+  };
+  
 
   return (
     <>
@@ -67,7 +95,7 @@ export default function CartSidebar() {
                       <div className="flow-root">
                         <ul className="-my-6 divide-y divide-gray-200">
                           {cart.map((item, index) => (
-                            <li key={item.id} className="flex py-6">
+                            <li key={index} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
                                   alt={item.product.imageAlt || 'Product Image'}
@@ -114,12 +142,12 @@ export default function CartSidebar() {
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
-                      <a
-                        href="/products"
+                      <button
+                        onClick={handleCheckout}
                         className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                       >
                         Checkout
-                      </a>
+                      </button>
                     </div>
                     <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                       <p>
