@@ -5,7 +5,7 @@ import Navbar from './components/layout/Navbar';
 import HomePage from './components/pages/HomePage';
 import Products from './components/products/Products';
 import ProductDetail from './components/products/ProductDetail';
-import { CartProvider } from './context/CartContext.js';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   return (

@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product, quantity, selectedOptions, totalPrice) => {
     setCart((prevCart) => [
       ...prevCart,
-      { id: `${product.id}-${JSON.stringify(selectedOptions)}`, product, quantity, selectedOptions, totalPrice }
+      { product, quantity, selectedOptions, totalPrice }
     ]);
   };
 
@@ -19,8 +19,10 @@ export const CartProvider = ({ children }) => {
 
   const getCartItemCount = () => cart.length;
 
+  const clearCart = () => setCart([]);
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, getCartItemCount }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, getCartItemCount, clearCart }}>
       {children}
     </CartContext.Provider>
   );
