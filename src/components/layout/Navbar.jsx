@@ -27,9 +27,6 @@ export default function Navbar() {
             </DisclosureButton>
           </div>
           <div className="flex flex-1 items-center justify-between sm:items-stretch sm:justify-start">
-            <div className="flex flex-shrink-0 items-center">
-              <span className="text-xl font-bold text-gray-900">Marcus's Ecommerce</span>
-            </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
@@ -70,12 +67,9 @@ export default function Navbar() {
             </DisclosureButton>
           ))}
           <DisclosureButton
-            as={Link}
-            to="/cart"
             className="relative block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
           >
             <ShoppingCartIcon className="h-6 w-6 inline-block" aria-hidden="true" />
-            {/* Optionally include cart count */}
           </DisclosureButton>
         </div>
       </DisclosurePanel>
