@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useCart } from '../context/CartContext';
 import { buildConstraintsMap, getDisabledOptions } from '../utils/constraintUtils';
 import { getAdjustedFrameFinishPrice } from '../utils/priceUtils';
+import 'react-toastify/dist/ReactToastify.css';
 
 const useProductDetail = (productId) => {
   const [product, setProduct] = useState(null);
@@ -10,6 +13,7 @@ const useProductDetail = (productId) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [availableOptions, setAvailableOptions] = useState({});
   const [disabledOptions, setDisabledOptions] = useState(new Set());
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -50,6 +54,24 @@ const useProductDetail = (productId) => {
     const newDisabledOptions = getDisabledOptions(selectedOptions, constraintsMap, availableOptions);
     setDisabledOptions(new Set(newDisabledOptions));
   }, [selectedOptions, constraints, availableOptions]);
+
+  const handleAddToCart = () => {
+    if (product) {
+      const cartProduct = {
+        id: product.id,
+        name: product.name,
+        base_price: product.base_price,
+        image_url: product.image_url,
+      };
+
+      addToCart(cartProduct, 1, selectedOptions, totalPrice);
+      toast.success('Product added to cart', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+      clearSelection();
+    }
+  };
 
   const handleOptionChange = (partName, optionId) => {
     setSelectedOptions(prev => {
@@ -101,6 +123,7 @@ const useProductDetail = (productId) => {
     totalPrice,
     availableOptions,
     handleOptionChange,
+    handleAddToCart,
     clearSelection,
     isOptionDisabled,
     recalculatePrice
