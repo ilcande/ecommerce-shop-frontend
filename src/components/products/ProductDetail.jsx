@@ -1,12 +1,8 @@
-// src/components/ProductDetail.jsx
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useCart } from '../../context/CartContext';
-import useProductDetail from '../../hooks/useProductDetail';
 import { getAdjustedFrameFinishPrice } from '../../utils/priceUtils';
+import useProductDetail from '../../hooks/useProductDetail';
 import Options from '../../components/options/Options';
-import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -16,28 +12,10 @@ const ProductDetail = () => {
     totalPrice,
     availableOptions,
     handleOptionChange,
+    handleAddToCart,
     clearSelection,
     isOptionDisabled,
   } = useProductDetail(productId);
-  const { addToCart } = useCart();
-
-  const handleAddToCart = () => {
-    if (product) {
-      const cartProduct = {
-        id: product.id,
-        name: product.name,
-        base_price: product.base_price,
-        image_url: product.image_url,
-      };
-
-      addToCart(cartProduct, 1, selectedOptions, totalPrice);
-      toast.success('Product added to cart', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
-      clearSelection();
-    }
-  };
 
   if (!product) {
     return <p>Loading...</p>;
