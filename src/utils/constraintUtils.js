@@ -37,27 +37,29 @@ export const getDisabledOptions = (selectedOptions, constraintsMap, availableOpt
   const selectedOptionIds = Object.values(selectedOptions).map(option => option.id);
 
   // Disable options based on direct constraints
-  Object.entries(selectedOptions).forEach(([selectedPartId, selectedOption]) => {
+  Object.entries(selectedOptions).forEach(([selectedPartName, selectedOption]) => {
     const selectedOptionId = selectedOption.id;
-    
+
+    // Find the options for the selected part name
+    const selectedPartOptions = availableOptions[selectedPartName]?.options || [];
+
     // Disable other options of the same part
-    if (availableOptions[selectedPartId]) {
-      availableOptions[selectedPartId].forEach((option) => {
-        if (option.id !== selectedOptionId) {
-          disabledOptions.add(option.id);
-        }
-      });
-    }
+    selectedPartOptions.forEach((option) => {
+      if (option.id !== selectedOptionId) {
+        disabledOptions.add(option.id);
+      }
+    });
 
     // Apply direct constraints
     const validConstraintsFromSelected = directConstraintsMap[selectedOptionId] || {};
 
-    Object.entries(availableOptions).forEach(([partId, options]) => {
-      if (partId === selectedPartId) return; // Skip the same part
+    Object.entries(availableOptions).forEach(([partName, partData]) => {
+      if (partName === selectedPartName) return; // Skip the same part
 
-      if (validConstraintsFromSelected[partId]) {
+      const { options } = partData;
+      if (validConstraintsFromSelected[partData.partId]) {
         options.forEach((option) => {
-          if (!validConstraintsFromSelected[partId].has(option.id)) {
+          if (!validConstraintsFromSelected[partData.partId].has(option.id)) {
             disabledOptions.add(option.id);
           }
         });
@@ -69,7 +71,8 @@ export const getDisabledOptions = (selectedOptions, constraintsMap, availableOpt
   selectedOptionIds.forEach(selectedOptionId => {
     const validConstraintsToSelected = reverseConstraintsMap[selectedOptionId] || {};
 
-    Object.entries(availableOptions).forEach(([partId, options]) => {
+    Object.entries(availableOptions).forEach(([partName, partData]) => {
+      const { partId, options } = partData;
       if (validConstraintsToSelected[partId]) {
         options.forEach((option) => {
           if (!validConstraintsToSelected[partId].has(option.id)) {
@@ -82,6 +85,7 @@ export const getDisabledOptions = (selectedOptions, constraintsMap, availableOpt
 
   return Array.from(disabledOptions);
 };
+
 
 
 
