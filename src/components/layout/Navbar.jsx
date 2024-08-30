@@ -1,9 +1,9 @@
-// src/components/layout/Navbar.js
 import React from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
-import CartSidebar from '../cart/CartSidebar'; // Import the CartSidebar component
+import CartSidebar from '../cart/CartSidebar';
+import useLogout from '../../hooks/useLogout';
 
 const navigation = [
   { name: 'Products', href: '/products', current: true },
@@ -14,6 +14,8 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const { isAdmin, handleLogout } = useLogout();
+
   return (
     <Disclosure as="nav" className="bg-white shadow-md">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -41,11 +43,19 @@ export default function Navbar() {
                     {item.name}
                   </Link>
                 ))}
+                {isAdmin && (
+                  <button
+                    onClick={handleLogout}
+                    className="w-full max-w-xs bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  >
+                    Logout
+                  </button>
+                )}
               </div>
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <CartSidebar /> {/* Add CartSidebar component */}
+            <CartSidebar />
           </div>
         </div>
       </div>
@@ -71,6 +81,14 @@ export default function Navbar() {
           >
             <ShoppingCartIcon className="h-6 w-6 inline-block" aria-hidden="true" />
           </DisclosureButton>
+          {isAdmin && (
+            <DisclosureButton
+              onClick={handleLogout}
+              className="relative block rounded-md px-3 py-2 text-base font-medium text-red-600 hover:bg-red-100"
+            >
+              Logout
+            </DisclosureButton>
+          )}
         </div>
       </DisclosurePanel>
     </Disclosure>

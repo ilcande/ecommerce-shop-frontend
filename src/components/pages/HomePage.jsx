@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import useHomePage from '../../hooks/useHomePage';
 
 const HomePage = () => {
-  const [message, setMessage] = useState('');
+  const { message } = useHomePage();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    axios.get('/pages/home')
-      .then(response => {
-        setMessage(response.data.message);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data!', error);
-      });
-  }, []);
 
   const handleButtonClick = (path) => {
     navigate(path);
@@ -32,16 +22,10 @@ const HomePage = () => {
           View Products
         </button>
         <button 
-          onClick={() => handleButtonClick('/login')} 
+          onClick={() => handleButtonClick('/admin/login')} 
           className="w-full max-w-xs mb-4 bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
         >
-          Login
-        </button>
-        <button 
-          onClick={() => handleButtonClick('/signup')} 
-          className="w-full max-w-xs bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-        >
-          Sign Up
+          Admin Login
         </button>
       </div>
     </div>
