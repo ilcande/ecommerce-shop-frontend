@@ -8,15 +8,23 @@ const useLogin = () => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post('/users/sign_in', { user: values });
-      const { message, admin } = response.data;
+      const { message, admin, token } = response.data;
 
       if (admin) {
-        localStorage.setItem('admin', response.data.admin);
-        localStorage.setItem('adminToken', response.data.token); 
+        localStorage.setItem('admin', admin);
+        localStorage.setItem('adminToken', token);
         toast.success(message, { autoClose: 3000 });
-        navigate('/admin/dashboard');
+
+        // Instead of navigating directly, make a request to the admin dashboard to ensure authorization
+        axios.get('/admin/dashboard', {
+          headers: { Authorization: `Bearer ${token}` }
+        }).then(() => {
+          navigate('/admin/dashboard');
+        }).catch((error) => {
+          toast.error('Not authorized as admin: ' + error.response.data.error, { autoClose: 3000 });
+        });
       } else {
-        toast.info('Successfully signed in as an admin', { autoClose: 3000 });
+        toast.info('Successfully signed in', { autoClose: 3000 });
         navigate('/');
       }
     } catch (error) {
