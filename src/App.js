@@ -6,6 +6,11 @@ import HomePage from './components/pages/HomePage';
 import AdminLogin from './components/pages/AdminLogin';
 import AdminDashboard from './components/pages/AdminDashboard';
 import AdminRoute from './routes/AdminRoute';
+import CreateProduct from './components/products/CreateProduct';
+import CreatePart from './components/parts/CreatePart';
+import CreateOption from './components/options/CreateOption';
+import CreateConstraint from './components/constraints/CreateConstraint';
+import CreateProductConfiguration from './components/product_configurations/CreateProductConfiguration';
 import Products from './components/products/Products';
 import ProductDetail from './components/products/ProductDetail';
 import { CartProvider } from './context/CartContext';
@@ -18,6 +23,46 @@ function App() {
         <ToastContainer />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route
+            path="/admin/products/new"
+            element={
+              <AdminRoute>
+                <CreateProduct />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/parts/new"
+            element={
+              <AdminRoute>
+                <CreatePart />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/options/new"
+            element={
+              <AdminRoute>
+                <CreateOption />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/constraints/new"
+            element={
+              <AdminRoute>
+                <CreateConstraint />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/product-configurations/new"
+            element={
+              <AdminRoute>
+                <CreateProductConfiguration />
+              </AdminRoute>
+            }
+          />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:productId" element={<ProductDetail />} />
           <Route path="/admin/login" element={<AdminLogin />} />

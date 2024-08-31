@@ -9,7 +9,7 @@ const AdminDashboard = () => {
     { label: 'Add Part', path: '/admin/parts/new' },
     { label: 'Add Option', path: '/admin/options/new' },
     { label: 'Add Constraint', path: '/admin/constraints/new' },
-    // Add more actions as necessary
+    { label: 'Add Product Configuration', path: '/admin/product-configurations/new' },
   ];
 
   return (
