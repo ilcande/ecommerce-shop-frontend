@@ -17,7 +17,8 @@ const useLogin = () => {
 
         // Instead of navigating directly, make a request to the admin dashboard to ensure authorization
         axios.get('/admin/dashboard', {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
         }).then(() => {
           navigate('/admin/dashboard');
         }).catch((error) => {
