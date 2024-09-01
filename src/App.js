@@ -11,6 +11,7 @@ import CreatePart from './components/parts/CreatePart';
 import CreateOption from './components/options/CreateOption';
 import CreateConstraint from './components/constraints/CreateConstraint';
 import CreateProductConfiguration from './components/product_configurations/CreateProductConfiguration';
+import CreateStockLevel from './components/stock_levels/CreateStockLevel';
 import Products from './components/products/Products';
 import ProductDetail from './components/products/ProductDetail';
 import UpdateProduct from './components/products/UpdateProduct';
@@ -61,6 +62,14 @@ function App() {
             element={
               <AdminRoute>
                 <CreateProductConfiguration />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/stock-levels/new"
+            element={
+              <AdminRoute>
+                <CreateStockLevel />
               </AdminRoute>
             }
           />
