@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -12,6 +13,8 @@ const CreateProductConfiguration = () => {
   const [selectedPartId, setSelectedPartId] = useState('');
   const [selectedOptionId, setSelectedOptionId] = useState('');
   const [isConfigComplete, setIsConfigComplete] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch Products and Parts
@@ -50,15 +53,15 @@ const CreateProductConfiguration = () => {
   }, [selectedPartId]);
 
   const handleAddConfiguration = () => {
-    if (selectedProductId && selectedOptionId) {
+    if (selectedPartId && selectedOptionId) {
       // Check if the configuration already exists
       const isDuplicate = configurations.some(
-        (config) => config.product_id === selectedProductId && config.option_id === selectedOptionId
+        (config) => config.part_id === selectedPartId && config.option_id === selectedOptionId
       );
       if (!isDuplicate) {
         setConfigurations([
           ...configurations,
-          { product_id: selectedProductId, option_id: selectedOptionId },
+          { part_id: selectedPartId, option_id: selectedOptionId },
         ]);
         setSelectedOptionId('');
       } else {
@@ -67,6 +70,12 @@ const CreateProductConfiguration = () => {
           autoClose: 3000,
         });
       }
+    } else {
+      // Show toast if the required fields are not selected
+      toast.info('Please select both a part and an option', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
     }
   };
 
@@ -82,7 +91,7 @@ const CreateProductConfiguration = () => {
         return;
       }
 
-      await axios.post('/admin/product_configurations/bulk_create', { configurations });
+      await axios.post(`/admin/products/${selectedProductId}/product_configurations/bulk_create`, { configurations });
       toast.success('Product Configurations created successfully', {
         position: 'top-center',
         autoClose: 3000,
@@ -91,6 +100,9 @@ const CreateProductConfiguration = () => {
       setSelectedProductId('');
       setSelectedPartId('');
       setSelectedOptionId('');
+
+      // Redirect to the product page
+      navigate('/products');
     } catch (error) {
       console.error('Error creating product configurations:', error);
       toast.error('Failed to create product configurations', {
@@ -160,7 +172,7 @@ const CreateProductConfiguration = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               >
                 <option value="">Select an Option</option>
-                {options.map((option) => (
+                {options.filter((option) => option.is_in_stock).map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.name}
                   </option>
@@ -186,7 +198,7 @@ const CreateProductConfiguration = () => {
         <ul className="mb-4">
           {configurations.map((config, index) => (
             <li key={index} className="flex justify-between p-2 border-b border-gray-200">
-              <span>Product ID: {config.product_id}</span>
+              <span>Part ID: {config.part_id}</span>
               <span>Option ID: {config.option_id}</span>
             </li>
           ))}

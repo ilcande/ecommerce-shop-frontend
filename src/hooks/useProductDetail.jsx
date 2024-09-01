@@ -26,19 +26,21 @@ const useProductDetail = (productId) => {
         const constraintsResponse = await axios.get(`/constraints?part_ids=${partIds}`);
         setConstraints(constraintsResponse.data);
 
-        const optionsByPart = productResponse.data.options.reduce((acc, option) => {
-          const partId = option.part_id;
-          const partName = option.part.name;
-        
-          if (!acc[partName]) {
-            acc[partName] = {
-              partId: partId,
-              options: [],
-            };
-          }
-          acc[partName].options.push(option);
-          return acc;
-        }, {});
+        const optionsByPart = productResponse.data.options
+          .filter(option => option.is_in_stock) // Filter out options that are out of stock
+          .reduce((acc, option) => {
+            const partId = option.part_id;
+            const partName = option.part.name;
+          
+            if (!acc[partName]) {
+              acc[partName] = {
+                partId: partId,
+                options: [],
+              };
+            }
+            acc[partName].options.push(option);
+            return acc;
+          }, {});
         
         setAvailableOptions(optionsByPart);
       } catch (error) {

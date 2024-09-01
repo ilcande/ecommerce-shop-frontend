@@ -13,6 +13,7 @@ import CreateConstraint from './components/constraints/CreateConstraint';
 import CreateProductConfiguration from './components/product_configurations/CreateProductConfiguration';
 import Products from './components/products/Products';
 import ProductDetail from './components/products/ProductDetail';
+import UpdateProduct from './components/products/UpdateProduct';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -65,6 +66,14 @@ function App() {
           />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:productId" element={<ProductDetail />} />
+          <Route
+            path="/admin/products/:productId/edit"
+            element={
+              <AdminRoute>
+                <UpdateProduct />
+              </AdminRoute>
+            }
+          />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
             path="/admin/dashboard"
