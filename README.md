@@ -11,34 +11,34 @@ Technology Stack:
 
 ### Components
 
-    Pages:
+  Pages:
 
-    Represent various views and routes in the application.
-    Examples: `AdminDashboard`, `HomePage`.
+  Represent various views and routes in the application.
+  Examples: `AdminDashboard`, `HomePage`.
 
-    Hooks:
+  Hooks:
 
-    Encapsulate reusable logic and data fetching.
-    Examples: `useCreateStockLevel` for managing stock level form interactions.
+  Encapsulate reusable logic and data fetching.
+  Examples: `useCreateStockLevel` for managing stock level form interactions.
 
-    Components:
+  Components:
 
-    Reusable UI elements that represent parts of the interface.
-    Examples: `CreateStockLevel` form component, `Products` list component.
+  Reusable UI elements that represent parts of the interface.
+  Examples: `CreateStockLevel` form component, `Products` list component.
 
-    State Management:
+  State Management:
 
-    Managed locally within components or hooks.information for debugging and monitoring.
-    State management libraries like Redux are not used in this implementation, relying on React's built-in state management.
+  Managed locally within components or hooks.information for debugging and monitoring.
+  State management libraries like Redux are not used in this implementation, relying on React's built-in state management.
 
-    API Integration:
+  API Integration:
 
-    `Axios` is used for making HTTP requests to the Rails API.
-    Components and hooks handle data fetching, form submissions, and error handling.
+  `Axios` is used for making HTTP requests to the Rails API.
+  Components and hooks handle data fetching, form submissions, and error handling.
 
-    Routing:
-      React Router is used for client-side routing.
-      Routes are defined in the `App` component, which renders the appropriate page based on the URL.
+  Routing:
+    React Router is used for client-side routing.
+    Routes are defined in the `App` component, which renders the appropriate page based on the URL.
 
 ## Data Flow
 
