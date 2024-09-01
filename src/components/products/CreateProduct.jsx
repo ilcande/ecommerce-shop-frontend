@@ -1,47 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
+import useCreateProduct from '../../hooks/useCreateProduct';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const CreateProduct = () => {
+  const { product, handleChange, handleSubmit } = useCreateProduct();
+
   const navigate = useNavigate();
-  const [product, setProduct] = useState({
-    name: '',
-    base_price: '',
-    image_url: '',
-  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProduct((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Add product_type directly here
-    const productWithType = { ...product, product_type: 'Bike' };
-
-    try {
-      const response = await axios.post('/admin/products', { product: productWithType });
-      if (response.status === 201) {
-        toast.success('Product created successfully', {
-          position: 'top-center',
-          autoClose: 3000,
-        });
-        navigate('/admin/product-configurations/new');
-      }
-    } catch (error) {
-      console.error('There was an error creating the product!', error);
-      toast.error('Failed to create product', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-    }
+  const handleRedirectToProducts = () => {
+    navigate('/products');
   };
 
   return (
@@ -105,9 +72,16 @@ const CreateProduct = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
         >
           Create Product
+        </button>
+        <button
+          type="button"
+          onClick={handleRedirectToProducts}
+          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        >
+          Go to Products
         </button>
       </form>
     </div>

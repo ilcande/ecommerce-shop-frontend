@@ -1,119 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import useCreateProductConfiguration from '../../hooks/useCreateProductConfiguration';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const CreateProductConfiguration = () => {
-  const [products, setProducts] = useState([]);
-  const [parts, setParts] = useState([]);
-  const [options, setOptions] = useState([]);
-  const [configurations, setConfigurations] = useState([]);
-  const [selectedProductId, setSelectedProductId] = useState('');
-  const [selectedPartId, setSelectedPartId] = useState('');
-  const [selectedOptionId, setSelectedOptionId] = useState('');
-  const [isConfigComplete, setIsConfigComplete] = useState(false);
+  const {
+    products,
+    parts,
+    options,
+    configurations,
+    selectedProductId,
+    selectedPartId,
+    selectedOptionId,
+    isConfigComplete,
+    setSelectedProductId,
+    setSelectedPartId,
+    setSelectedOptionId,
+    handleAddConfiguration,
+    handleSubmit,
+    handleCompleteConfig,
+  } = useCreateProductConfiguration();
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Fetch Products and Parts
-    const fetchProductsAndParts = async () => {
-      try {
-        const productsResponse = await axios.get('/products');
-        const filterProducts = productsResponse.data.filter((product) => !product.options.length);
-        setProducts(filterProducts);
-
-        const partsResponse = await axios.get('/admin/parts');
-        setParts(partsResponse.data);
-      } catch (error) {
-        console.error('Error fetching products and parts:', error);
-      }
-    };
-
-    fetchProductsAndParts();
-  }, []);
-
-  useEffect(() => {
-    // Fetch options based on selected part
-    const fetchOptionsForPart = async () => {
-      if (selectedPartId) {
-        try {
-          const response = await axios.get(`/admin/parts/${selectedPartId}/options`);
-          setOptions(response.data);
-        } catch (error) {
-          console.error('Error fetching options for part:', error);
-        }
-      } else {
-        setOptions([]);
-      }
-    };
-
-    fetchOptionsForPart();
-  }, [selectedPartId]);
-
-  const handleAddConfiguration = () => {
-    if (selectedPartId && selectedOptionId) {
-      // Check if the configuration already exists
-      const isDuplicate = configurations.some(
-        (config) => config.part_id === selectedPartId && config.option_id === selectedOptionId
-      );
-      if (!isDuplicate) {
-        setConfigurations([
-          ...configurations,
-          { part_id: selectedPartId, option_id: selectedOptionId },
-        ]);
-        setSelectedOptionId('');
-      } else {
-        toast.info('Configuration already exists', {
-          position: 'top-center',
-          autoClose: 3000,
-        });
-      }
-    } else {
-      // Show toast if the required fields are not selected
-      toast.info('Please select both a part and an option', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Check if configurations are empty
-      if (configurations.length === 0) {
-        toast.info('No configurations to submit', {
-          position: 'top-center',
-          autoClose: 3000,
-        });
-        return;
-      }
-
-      await axios.post(`/admin/products/${selectedProductId}/product_configurations/bulk_create`, { configurations });
-      toast.success('Product Configurations created successfully', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-      setConfigurations([]);
-      setSelectedProductId('');
-      setSelectedPartId('');
-      setSelectedOptionId('');
-
-      // Redirect to the product page
-      navigate('/products');
-    } catch (error) {
-      console.error('Error creating product configurations:', error);
-      toast.error('Failed to create product configurations', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-    }
-  };
-
-  const handleCompleteConfig = () => {
-    setIsConfigComplete(true);
+  const handleRedirectToProducts = () => {
+    navigate('/products');
   };
 
   return (
@@ -182,14 +92,14 @@ const CreateProductConfiguration = () => {
             <button
               type="button"
               onClick={handleAddConfiguration}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full mb-4"
             >
               Add to Configuration
             </button>
             <button
               type="button"
               onClick={handleCompleteConfig}
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-6"
+              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full mb-6"
             >
               Close Configuration
             </button>
@@ -206,11 +116,18 @@ const CreateProductConfiguration = () => {
         {isConfigComplete && (
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
           >
             Create Product Configurations
           </button>
         )}
+        <button
+          type="button"
+          onClick={handleRedirectToProducts}
+          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        >
+          Go to Products
+        </button>
       </form>
     </div>
   );
