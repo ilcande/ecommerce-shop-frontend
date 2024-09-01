@@ -2,7 +2,31 @@
 
 The e-commerce application is a two-part system consisting of a [backend Rails API](https://github.com/ilcande/ecommerce-shop-backend) and a frontend React application. The backend Rails application serves as an API-only server that provides a robust and scalable interface for CRUD operations, business logic, and data management. The frontend React application, styled with Tailwind CSS, acts as the user interface through which end-users interact with the application.
 
-## Architecture Backend (Rails API)
+## Installation
+
+To run the application locally, you need to set up both the backend Rails API and the frontend React application.
+For the frontend, follow the instructions below:
+
+- Clone the repository:
+
+```bash
+git clone https://github.com/ilcande/ecommerce-shop-frontend.git
+cd ecommerce-shop-frontend
+```
+
+- Install dependencies:
+
+```bash
+npm install
+```
+
+- Start the development server:
+
+```bash
+npm start
+```
+
+## Architecture Frontend
 
 Technology Stack:
 
@@ -39,6 +63,58 @@ Technology Stack:
   Routing:
     React Router is used for client-side routing.
     Routes are defined in the `App` component, which renders the appropriate page based on the URL.
+
+## User Actions
+
+### Product Page
+
+- **Description**: The product page is a read operation performed to display the product's details for customers to make a purchase.
+- **UI Presentation**: The product page shows the base price and available customization options.
+- **Available Options**: Options are displayed based on the constraints defined in the database. If a particular option cannot be combined with another (e.g., "Full-Suspension" cannot be selected with "Mountain Wheels"), it will be dynamically disabled.
+- **Price Calculation**: The total price is updated live based on the customer's selections. This includes the base price plus any additional costs associated with selected options.
+
+### Add to Cart Action
+
+- **Description**: After selecting the desired options, customers can add the product to their cart.
+- **Database Persistence**: When the "Add to Cart" button is clicked, the selected product and its configuration are saved to the cart. The stock levels are updated to reflect the new inventory status upon checkout. Payment processes are not covered in this challenge but would typically involve additional backend transactions.
+
+## Admin Workflows
+
+### Creation of a New Product
+
+- **Description**: Admins can create new products by specifying necessary information like product name, type, and base price.
+- **Database Changes**: New records are added to the `Products` table. Configurations and options associated with this product can also be set up.
+
+### Addition of a New Part Choice
+
+- **Description**: Admins can add new parts, such as a `Brakes`, through a user interface.
+- **UI Description**: The UI allows admins to specify the part name and product type. The part is then added to the `Parts` table.
+- **Database Changes**: A new record is added to the `Parts` table. Options related to this part can be created subsequently.
+
+### Addition of a New Option for a Part
+
+- **Description**: Admins can add new options for a part, such as `Disc Brakes` for the `Brakes` part.
+- **UI Description**: The UI provides fields to specify the option name, price. The option is then associated with the relevant part.
+
+### Setting Up Constraints
+
+- **Description**: Admins can define constraints that restrict certain options from being selected together.
+- **UI Description**: The UI provides a way to specify constraints between options. For example, "Full-Suspension" and "Mountain Wheels" cannot be selected together.
+
+### Managing Stock Levels
+
+- **Description**: Admins can update the stock levels for each option.
+- **UI Description**: The UI provides a form to set the stock level for each option. This information is stored in the `StockLevels` table.
+
+### Setting Up Configurations for a Product
+
+- **Description**: Admins can create configurations for a product by selecting options for each part.
+- **UI Description**: The UI allows admins to choose options for each part and save the configuration. This information is stored in the `ProductConfigurations` table and associated with the product.
+
+### Updating Existing Objects Attributes
+
+- **Description**: Admins can update the attributes of existing objects like options, and stock levels.
+- **UI Description**: The UI provides forms to update the attributes of options and stock levels. Changes are reflected in the database.
 
 ## Data Flow
 
