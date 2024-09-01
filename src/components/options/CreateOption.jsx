@@ -1,50 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
+import useCreateOption from '../../hooks/useCreateOption';
+import { useNavigate } from 'react-router-dom';
 
 const CreateOption = () => {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [partId, setPartId] = useState('');
-  const [parts, setParts] = useState([]);
+  const {
+    name,
+    setName,
+    price,
+    setPrice,
+    partId,
+    setPartId,
+    parts,
+    handleSubmit,
+  } = useCreateOption();
 
-  useEffect(() => {
-    const fetchParts = async () => {
-      try {
-        const response = await axios.get('/admin/parts');
-        setParts(response.data);
-      } catch (error) {
-        console.error('Error fetching parts:', error);
-      }
-    };
-    fetchParts();
-  }, []);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('/admin/options', {
-        option: {
-          name,
-          price,
-          part_id: partId,
-        },
-      });
-      toast.success('Option created successfully', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-      setName('');
-      setPrice('');
-      setPartId('');
-    } catch (error) {
-      console.error('Error creating option:', error);
-      toast.error('Failed to create option', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-    }
+  const handleRedirectToProducts = () => {
+    navigate('/products');
   };
 
   return (
@@ -102,6 +75,13 @@ const CreateOption = () => {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
         >
           Create Option
+        </button>
+        <button
+          type="button"
+          onClick={handleRedirectToProducts}
+          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        >
+          Go to Products
         </button>
       </form>
     </div>

@@ -1,93 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
+import useCreateConstraint from '../../hooks/useCreateConstraint';
+import { useNavigate } from 'react-router-dom';
 
 const CreateConstraint = () => {
-  const [partId, setPartId] = useState('');
-  const [optionId, setOptionId] = useState('');
-  const [constraintPartId, setConstraintPartId] = useState('');
-  const [constraintOptionId, setConstraintOptionId] = useState('');
-  const [parts, setParts] = useState([]);
-  const [partOptions, setPartOptions] = useState([]);
-  const [constraintPartOptions, setConstraintPartOptions] = useState([]);
+  const {
+    partId,
+    optionId,
+    constraintPartId,
+    constraintOptionId,
+    parts,
+    partOptions,
+    constraintPartOptions,
+    setPartId,
+    setOptionId,
+    setConstraintPartId,
+    setConstraintOptionId,
+    handleSubmit,
+  } = useCreateConstraint();
 
-  // Fetch all parts and options on initial load
-  useEffect(() => {
-    const fetchParts = async () => {
-      try {
-        const response = await axios.get('/admin/parts');
-        setParts(response.data);
-      } catch (error) {
-        console.error('Error fetching parts:', error);
-      }
-    };
+  const navigate = useNavigate();
 
-    fetchParts();
-  }, []);
-
-  // Fetch options based on selected part
-  useEffect(() => {
-    const fetchOptionsByPart = async () => {
-      if (partId) {
-        try {
-          const response = await axios.get(`/admin/parts/${partId}/options`);
-          setPartOptions(response.data);
-        } catch (error) {
-          console.error('Error fetching options by part:', error);
-        }
-      } else {
-        setPartOptions([]);
-      }
-    };
-
-    fetchOptionsByPart();
-  }, [partId]);
-
-  // Fetch options based on selected constraint part
-  useEffect(() => {
-    const fetchOptionsByConstraintPart = async () => {
-      if (constraintPartId) {
-        try {
-          const response = await axios.get(`/admin/parts/${constraintPartId}/options`);
-          setConstraintPartOptions(response.data);
-        } catch (error) {
-          console.error('Error fetching options by constraint part:', error);
-        }
-      } else {
-        setConstraintPartOptions([]);
-      }
-    };
-
-    fetchOptionsByConstraintPart();
-  }, [constraintPartId]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('/admin/constraints', {
-        constraint: {
-          part_id: partId,
-          option_id: optionId,
-          constraint_part_id: constraintPartId,
-          constraint_option_id: constraintOptionId,
-        },
-      });
-      toast.success('Constraint created successfully', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-      setPartId('');
-      setOptionId('');
-      setConstraintPartId('');
-      setConstraintOptionId('');
-    } catch (error) {
-      console.error('Error creating constraint:', error);
-      toast.error('Failed to create constraint', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-    }
+  const handleRedirectToProducts = () => {
+    navigate('/products');
   };
 
   return (
@@ -175,6 +109,13 @@ const CreateConstraint = () => {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
         >
           Create Constraint
+        </button>
+        <button
+          type="button"
+          onClick={handleRedirectToProducts}
+          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        >
+          Go to Products
         </button>
       </form>
     </div>
