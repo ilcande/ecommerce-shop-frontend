@@ -5,16 +5,16 @@ import { Link } from 'react-router-dom';
 import CartSidebar from '../cart/CartSidebar';
 import useLogout from '../../hooks/useLogout';
 
-const navigation = [
-  { name: 'Products', href: '/products', current: true },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Navbar() {
   const { isAdmin, handleLogout } = useLogout();
+  const navigation = [
+    { name: 'Products', href: '/products', key: 'products' },
+    isAdmin && { name: 'Admin Dashboard', href: '/admin/dashboard', key: 'admin-dashboard' },
+  ];
 
   return (
     <Disclosure as="nav" className="bg-white shadow-md">
@@ -31,9 +31,9 @@ export default function Navbar() {
           <div className="flex flex-1 items-center justify-between sm:items-stretch sm:justify-start">
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                {navigation.map((item) => (
+                {navigation.map((item, index) => (
                   <Link
-                    key={item.name}
+                    key={index}
                     to={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
@@ -43,28 +43,29 @@ export default function Navbar() {
                     {item.name}
                   </Link>
                 ))}
-                {isAdmin && (
-                  <button
-                    onClick={handleLogout}
-                    className="w-full max-w-xs bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                  >
-                    Logout
-                  </button>
-                )}
               </div>
             </div>
           </div>
+          {/* Right side with Cart and Logout */}
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <CartSidebar />
+            {isAdmin && (
+              <button
+                onClick={handleLogout}
+                className="ml-4 px-3 py-2 text-sm font-medium text-gray-800 hover:text-gray-600 focus:outline-none"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </div>
 
       <DisclosurePanel className="sm:hidden">
         <div className="space-y-1 px-2 pb-3 pt-2">
-          {navigation.map((item) => (
+          {navigation.map((item, index) => (
             <DisclosureButton
-              key={item.name}
+              key={index}
               as={Link}
               to={item.href}
               aria-current={item.current ? 'page' : undefined}
@@ -76,19 +77,19 @@ export default function Navbar() {
               {item.name}
             </DisclosureButton>
           ))}
-          <DisclosureButton
-            className="relative block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-          >
-            <ShoppingCartIcon className="h-6 w-6 inline-block" aria-hidden="true" />
-          </DisclosureButton>
-          {isAdmin && (
-            <DisclosureButton
-              onClick={handleLogout}
-              className="relative block rounded-md px-3 py-2 text-base font-medium text-red-600 hover:bg-red-100"
-            >
-              Logout
+          <div className="flex items-center">
+            <DisclosureButton className="relative block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+              <ShoppingCartIcon className="h-6 w-6 inline-block" aria-hidden="true" />
             </DisclosureButton>
-          )}
+            {isAdmin && (
+              <DisclosureButton
+                onClick={handleLogout}
+                className="ml-4 px-3 py-2 text-base font-medium text-gray-800 hover:text-gray-600"
+              >
+                Logout
+              </DisclosureButton>
+            )}
+          </div>
         </div>
       </DisclosurePanel>
     </Disclosure>

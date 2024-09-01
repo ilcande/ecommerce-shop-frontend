@@ -8,7 +8,6 @@ const CreateProduct = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState({
     name: '',
-    product_type: '',
     base_price: '',
     image_url: '',
   });
@@ -24,14 +23,17 @@ const CreateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Add product_type directly here
+    const productWithType = { ...product, product_type: 'Bike' };
+
     try {
-      const response = await axios.post('/admin/products', { product });
+      const response = await axios.post('/admin/products', { product: productWithType });
       if (response.status === 201) {
         toast.success('Product created successfully', {
           position: 'top-center',
           autoClose: 3000,
         });
-        navigate('/products');
+        navigate('/admin/product-configurations/new');
       }
     } catch (error) {
       console.error('There was an error creating the product!', error);
@@ -68,10 +70,9 @@ const CreateProduct = () => {
             type="text"
             id="product_type"
             name="product_type"
-            value={product.product_type}
-            onChange={handleChange}
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value="Bike"
+            disabled
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-200 cursor-not-allowed"
           />
         </div>
         <div className="mb-4">

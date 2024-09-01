@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline'; // Import icons for update and delete
+import 'react-toastify/dist/ReactToastify.css';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const admin = localStorage.getItem('admin');
+    const token = localStorage.getItem('adminToken');
+    if (admin && token) {
+      setIsAdmin(true);
+    }
+  }, []);
 
   useEffect(() => {
     axios.get('/products')
@@ -13,11 +25,27 @@ const Products = () => {
       })
       .catch(error => {
         console.error('Error fetching products', error);
+        toast.error('Error fetching products', { position: 'top-center', autoClose: 3000 });
       });
   }, []);
 
   const handleProductClick = (productId) => {
     navigate(`/products/${productId}`);
+  };
+
+  const handleDelete = async (productId) => {
+    try {
+      await axios.delete(`/admin/products/${productId}`);
+      setProducts(products.filter(product => product.id !== productId)); // Remove deleted product from state
+      toast.success('Product deleted successfully', { position: 'top-center', autoClose: 3000 });
+    } catch (error) {
+      console.error('Error deleting product', error);
+      toast.error('Error deleting product', { position: 'top-center', autoClose: 3000 });
+    }
+  };
+
+  const handleUpdateRedirect = async (productId) => {
+    navigate(`/admin/products/${productId}/edit`);
   };
 
   return (
@@ -38,8 +66,10 @@ const Products = () => {
               <div className="mt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
-                    <button onClick={() => handleProductClick(product.id)} className="focus:outline-none">
-                      <span aria-hidden="true" className="absolute inset-0" />
+                    <button
+                      onClick={() => handleProductClick(product.id)}
+                      className="focus:outline-none"
+                    >
                       {product.name}
                     </button>
                   </h3>
@@ -53,6 +83,23 @@ const Products = () => {
               >
                 Configure this {product.product_type}
               </button>
+
+              {isAdmin && (
+                <div className="mt-6 flex space-x-4 justify-between">
+                  <button
+                    onClick={() => handleUpdateRedirect(product.id)}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    <PencilIcon className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(product.id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <TrashIcon className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
