@@ -10,6 +10,7 @@ const AdminDashboard = () => {
     { label: 'Add Option', path: '/admin/options/new' },
     { label: 'Add Constraint', path: '/admin/constraints/new' },
     { label: 'Add Product Configuration', path: '/admin/product-configurations/new' },
+    { label: 'Add Stock Level', path: '/admin/stock-levels/new' },
   ];
 
   return (
