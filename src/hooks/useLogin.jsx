@@ -21,6 +21,7 @@ const useLogin = () => {
           withCredentials: true,
         }).then(() => {
           navigate('/admin/dashboard');
+          window.location.reload();
         }).catch((error) => {
           toast.error('Not authorized as admin: ' + error.response.data.error, { autoClose: 3000 });
         });
